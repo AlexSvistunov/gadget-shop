@@ -18,10 +18,10 @@ async function initialServerElementsToHTML() {
 
 }
 
-function productTemplate(product) {
+export function productTemplate(product) {
 
     const {title, shortDesc, image, price, id} = product
-    cards.insertAdjacentHTML('beforeend', `
+    cards?.insertAdjacentHTML('beforeend', `
         <div class="product">
             <h3 class="product__title">${title === 'Xiaomi Робот пылесос Vacuum Mop 3C моющий CN' ? 'Xiomi Робот' : title}</h3>
             <img class="product__image" src="${image}">
@@ -35,34 +35,43 @@ function productTemplate(product) {
 
 }
 
-let storageArray = []
+function handleCardClick(event) {
 
+}
 
-cards.addEventListener('click', (e) => {
+cards?.addEventListener('click', (e) => {
     const self = e.target;
     // добавить если это не нужная нам кнопка через функцию которую я не помню
     const product = self.closest('.product')
     const productId = product.querySelector('.product__id').textContent
-    setProductToLocalStorage(product, productId)
-    document.querySelector('.basket__count').textContent = storageArray.length
+
+    const basket = getProductFromLocalStorage()
+    if(basket.includes(productId)) return
+    basket.push(productId)
+    setProductToLocalStorage(basket)
+
     
 })
-let amountOfLocalStorage = 0;
+
+const basketCount = document.querySelector('.basket__count')
+basketCount.textContent = getProductFromLocalStorage().length
 
 
-function setProductToLocalStorage(product, id) {
-    storageArray.push(id)
-    amountOfLocalStorage++
-    localStorage.setItem('basket', storageArray)
+export function setProductToLocalStorage(basket) {
+    const basketCount = document.querySelector('.basket__count')
+    localStorage.setItem('basket', JSON.stringify(basket))
+    basketCount.textContent = basket.length
 }
 
+export function getProductFromLocalStorage() {
+    const cartDataJSON = localStorage.getItem('basket')
+    return cartDataJSON ? JSON.parse(cartDataJSON) : []
 
-function getProductFromLocalStorage() {
-    
 }
 
+// getProductFromLocalStorage()
 
-console.log(localStorage.getItem('basket'))
+
 
 // кнопка посмотреть еще
 
