@@ -1,7 +1,7 @@
 import { getProductFromLocalStorage } from "./main.js";
 import { productTemplate } from "./main.js";
 
-const cartProduct = document.querySelector(".cart-products");
+const cartProduct = document.querySelector(".cart");
 
 const basketCount = document.querySelector(".basket__count");
 basketCount.textContent = getProductFromLocalStorage().length;
@@ -23,7 +23,7 @@ async function initialServerElementsToHTML() {
   console.log(cartProducts);
   cartProducts.forEach((product) => {
     cartProduct.insertAdjacentHTML(
-      "beforeend",
+      "afterend",
       `
             <div class="cart">
                 <div class="cart__product">
